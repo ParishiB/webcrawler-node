@@ -6,9 +6,19 @@ function getUrlsFromHTML(htmlBody, baseURL) {
   const linkElements = dom.window.document.querySelectorAll("a");
   for (const linkElement of linkElements) {
     if (linkElement.href.slice(0, 1) === "/") {
-      urls.push(`${baseURL}${linkElement.href}`);
+      try {
+        const urlObj = new URL(`${baseURL}${linkElement.href}`);
+        urls.push(urlObj.href);
+      } catch (error) {
+        console.error(`eror with relative url`);
+      }
     } else {
-      urls.push(linkElement.href);
+      try {
+        const urlObj = new URL(`${baseURL}${linkElement.href}`);
+        urls.push(urlObj.href);
+      } catch (error) {
+        console.error(`eror with absolute url`);
+      }
     }
   }
   return urls;
